@@ -23,5 +23,4 @@ hs_err_pid*
 /build
 
 # misc
-/go
 .DS_Store

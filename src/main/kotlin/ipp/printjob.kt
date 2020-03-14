@@ -1,9 +1,9 @@
 package ipp
+
 // --------------------
 // Author: Gerhard Muth
 // Date  : 14.3.2020
 // --------------------
-
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI
@@ -30,13 +30,13 @@ fun printJob(uri: URI, documentInputStream: InputStream) {
             write(value.toByteArray(charset))
         }
         writeShort(0x0200) // ipp version
-        writeShort(0x0002) // OPERATION Print-Job
+        writeShort(0x0002) // print job operation
         writeInt(0x002A) // request id
-        writeByte(0x01) // GROUP operation-attributes-tag
-        writeAttribute(0x47, "attributes-charset", "$charset")    // ATTR charset attributes-charset utf-8
-        writeAttribute(0x48, "attributes-natural-language", "en") // ATTR language attributes-natural-language en
-        writeAttribute(0x45, "printer-uri", "$uri")               // ATTR uri printer-uri $uri
-        writeByte(0x03) // GROUP end-tag
+        writeByte(0x01) // operation group tag
+        writeAttribute(0x47, "attributes-charset", charset.name().toLowerCase())
+        writeAttribute(0x48, "attributes-natural-language", "en")
+        writeAttribute(0x45, "printer-uri", "$uri")
+        writeByte(0x03) // end tag
         close()
         byteArrayOutputStream.close()
         byteArrayOutputStream.toByteArray()
@@ -46,7 +46,7 @@ fun printJob(uri: URI, documentInputStream: InputStream) {
     println("send ipp request to $uri")
     val ippResponse = with(uri.toURL().openConnection() as HttpURLConnection) {
         val ippContentType = "application/ipp"
-        setConnectTimeout(3)
+        setConnectTimeout(3000)
         setDoOutput(true)
         setRequestProperty("Content-Type", ippContentType)
         val ippRequestInputStream = ippRequest.inputStream()

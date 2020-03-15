@@ -9,15 +9,7 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI
 
-fun main(args: Array<String>) {
-    if (args.size < 2) {
-        println("usage: java -jar printjob.jar <printer-uri> <file>")
-        return
-    }
-    printJob(URI.create(args[0]), FileInputStream(File(args[1])))
-}
-
-fun printJob(uri: URI, documentInputStream: InputStream) {
+fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
     val charset = Charsets.UTF_8
 
     // encode Print-Job operation

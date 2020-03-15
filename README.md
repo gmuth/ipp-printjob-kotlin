@@ -1,7 +1,6 @@
 # ipp-printjob-kotlin
 
-A minimal ipp client implementation for jvm written in kotlin.
-
+A minimal client implementation of the ipp-protocol written in kotlin for the jvm.
 
 ### Build
 
@@ -18,9 +17,6 @@ Directory `demo` contains the `printjob.jar` and a test script called `go` that 
 Registered Apple developers can download
 [Additional Tools for Xcode](https://download.developer.apple.com/Developer_Tools/Additional_Tools_for_Xcode_11/Additional_Tools_for_Xcode_11.dmg)
 containing the Printer Simulator.
-
-
-
 
 ### Usage
 
@@ -46,4 +42,4 @@ If you don't know the printer uri try `ippfind`.
 
 The operation attributes group does not include a value for `document-format`.
 This should be equivalent to `application/octet-stream` indicating the printer has to auto sense the document format.
-You have to make sure the printer supports the document format you send - PDF is usually a good option. 
+You have to make sure the printer supports the document format you send - PDF is usually a good option.

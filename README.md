@@ -13,7 +13,14 @@ When the build has finished you can find `printjob.jar` in `build/libs`
 
 ### Distribution
 
-If you don't want to build the software [binary releases](https://github.com/gmuth/ipp-printjob-kotlin/releases) are provided.
+For the impatient [binary releases](https://github.com/gmuth/ipp-printjob-kotlin/releases) are provided. 
+Directory `demo` contains the `printjob.jar` and a test script called `go` that submits a blank PDF to Apple's Printer Simulator.
+Registered Apple developers can download
+[Additional Tools for Xcode](https://download.developer.apple.com/Developer_Tools/Additional_Tools_for_Xcode_11/Additional_Tools_for_Xcode_11.dmg)
+containing the Printer Simulator.
+
+
+
 
 ### Usage
 

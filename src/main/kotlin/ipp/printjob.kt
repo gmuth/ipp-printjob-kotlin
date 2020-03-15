@@ -2,8 +2,9 @@ package ipp
 
 // --------------------
 // Author: Gerhard Muth
-// Date  : 14.3.2020
+// Date  : 15.3.2020
 // --------------------
+
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI
@@ -29,7 +30,7 @@ fun printJob(uri: URI, documentInputStream: InputStream) {
             writeShort(value.length)
             write(value.toByteArray(charset))
         }
-        writeShort(0x0200) // ipp version
+        writeShort(0x0101) // ipp version
         writeShort(0x0002) // print job operation
         writeInt(0x002A) // request id
         writeByte(0x01) // operation group tag
@@ -55,8 +56,7 @@ fun printJob(uri: URI, documentInputStream: InputStream) {
         documentInputStream.close()
         outputStream.close()
         // check response
-        val contentType = getHeaderField("Content-Type")
-        if (contentType != ippContentType) {
+        if (getHeaderField("Content-Type") != ippContentType) {
             throw IOException("response from $uri is not '$ippContentType'")
         }
         if (responseCode != 200) {
@@ -68,10 +68,9 @@ fun printJob(uri: URI, documentInputStream: InputStream) {
     // decode ipp response
     with(DataInputStream(ByteArrayInputStream(ippResponse))) {
         fun readValue(): ByteArray = readNBytes(readShort().toInt())
-        readShort() // version
-        val status = readShort()
-        println(String.format("ipp response status: %04X", status))
-        readInt() // request id
+        readShort() // ignore version
+        println(String.format("ipp response status: %04X", readShort()))
+        readInt() // ignore request id
         var tag: Byte
         do {
             tag = readByte()
@@ -81,7 +80,7 @@ fun printJob(uri: URI, documentInputStream: InputStream) {
             }
             // attribute tag
             val name = String(readValue(), charset)
-            val value: Any = when (tag.toInt()) {
+            val value = when (tag.toInt()) {
                 0x21, 0x23 -> {
                     readShort()
                     readInt()

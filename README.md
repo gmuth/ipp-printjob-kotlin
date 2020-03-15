@@ -24,8 +24,8 @@ containing the Printer Simulator.
 
 ### Usage
 
-The tool takes two arguments: *printer-uri* and *file-name*. \
-The url scheme `ipp://` is not supported - use `http://` instead. \
+The tool takes two arguments: *printer-uri* and *file-name*. 
+The url scheme `ipp://` is not supported - use `http://` instead.
 If you don't know the printer uri try `ippfind`. 
 
     java -jar printjob.jar http://colorjet:631/ipp/printer A4-blank.pdf

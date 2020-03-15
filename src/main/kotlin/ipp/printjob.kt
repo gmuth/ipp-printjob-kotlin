@@ -80,7 +80,7 @@ fun printJob(uri: URI, documentInputStream: InputStream) {
             }
             // attribute tag
             val name = String(readValue(), charset)
-            val value = when (tag.toInt()) {
+            val value: Any = when (tag.toInt()) {
                 0x21, 0x23 -> {
                     readShort()
                     readInt()

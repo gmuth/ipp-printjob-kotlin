@@ -12,7 +12,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URI
 
-fun printjobStreamingversion(uri: URI, documentInputStream: InputStream) {
+fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
     val charset = Charsets.UTF_8
 
     println("send ipp request to $uri")

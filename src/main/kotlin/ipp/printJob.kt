@@ -16,5 +16,5 @@ fun main(args: Array<String>) {
     }
     val printerURI = URI.create(args[0])
     val file = File(args[1])
-    printjobStreamingversion(printerURI, FileInputStream(file))
+    printJobStreamingVersion(printerURI, FileInputStream(file))
 }

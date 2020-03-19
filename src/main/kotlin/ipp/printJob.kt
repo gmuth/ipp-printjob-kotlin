@@ -18,5 +18,5 @@ fun main(args: Array<String>) {
     val file = File(args[1])
     printJobByteArrayVersion(printerURI, FileInputStream(file))
     //printJobStreamingVersion(printerURI, FileInputStream(file))
-    //printJobWithoutResponseDecoding(printerURI, FileInputStream(file))
+    //printJobWithStatusOnly(printerURI, FileInputStream(file))
 }

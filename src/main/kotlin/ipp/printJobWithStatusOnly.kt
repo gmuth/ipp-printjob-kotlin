@@ -12,7 +12,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URI
 
-fun printJobWithoutResponseDecoding(uri: URI, documentInputStream: InputStream) {
+fun printJobWithStatusOnly(uri: URI, documentInputStream: InputStream) {
     val charset = Charsets.UTF_8
     with(uri.toURL().openConnection() as HttpURLConnection) {
         setDoOutput(true)

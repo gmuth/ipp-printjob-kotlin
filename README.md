@@ -5,9 +5,9 @@ A minimal client implementation of the ipp-protocol written in kotlin for the jv
 ### General
 
 The printjob source code should be useful for use cases of driverless printing.
-Especially automated software without user interaction should benefit from simple solutions like this.
+Especially automated processes without user interaction should benefit from simple solutions like this.
 This code is not and will never become a full-fledged ipp implementation.
-If you need more control over print jobs and monitoring of printers and print jobs look at my other project
+I will provide more control over print jobs, monitoring of printers and print jobs in my other project
 [ipp-client-kotlin](https://github.com/gmuth/ipp-client-kotlin).
 
 ### Distribution
@@ -59,7 +59,8 @@ If required by your printer, you can set the document format programmatically by
 If you use an unsupported `printer-uri` you will get a response similar to this one:
 
     send ipp request to http://localhost:8632/ipp/norona
-    ipp response status: 0400
+    ipp version 1.1
+    ipp status 0400
     group 01
        attributes-charset (47) = utf-8
        attributes-natural-language (48) = en
@@ -67,25 +68,23 @@ If you use an unsupported `printer-uri` you will get a response similar to this 
     group 03
 
 You can use `ippfind` or `dns-sd -Z _ipp._tcp` (look at the rp value) to discover your printer's uri.
-If you have other issues just send me an email.
+If you have other issues contact me.
 
 ### Two implementations: Intermediate ByteArray and Streaming
 
 IPP messages are binary encoded requests and responses that are being transmitted via HTTP POST.
 The ByteArrayVersion uses a ByteArray as intermediate buffer structure to temporarily save the IPP request and response.
-Newbies should find this easier to understand, because encoding, message exchange and decoding are nicely separated.
+Newbies will find this easier to understand because encoding, message exchange and decoding are nicely separated.
 
 In the StreamingVersion the connection handling embraces the encoding and decoding fragments.
 
 ### Build
 
-In order to build the software you need an installed JDK.
+To build `printjob.jar` into `build/libs` you need an installed JDK.
 
     ./gradlew
 
-This builds `printjob.jar` into `build/libs`
-
 ### Community
 
-I'd love to see this minimal ipp implementation being ported to all kinds of programming languages.
+I'd be happy to see this minimal ipp implementation being ported to all kinds of programming languages.
 On request I'll explain developers without experience in jvm based languages what the jvm runtime library is used for.

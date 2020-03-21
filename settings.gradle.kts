@@ -1,1 +1,1 @@
-rootProject.name = "ipp-printjob"
+rootProject.name = "ipp-printjob-kotlin"

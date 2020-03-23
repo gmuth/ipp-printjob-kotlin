@@ -9,6 +9,11 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI
 
+fun main(args: Array<String>) {
+    val (printerURI, documentInputStream) = getArgsOrThrowUsage(args)
+    printJobByteArrayVersion(printerURI, documentInputStream)
+}
+
 fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
     val charset = Charsets.UTF_8
 

@@ -12,6 +12,11 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URI
 
+fun main(args: Array<String>) {
+    val (printerURI, documentInputStream) = getArgsOrThrowUsage(args)
+    printJobStreamingVersion(printerURI, documentInputStream)
+}
+
 fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
     val charset = Charsets.UTF_8
 

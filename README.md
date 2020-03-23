@@ -27,6 +27,7 @@ If you don't know the printer uri try `ippfind`.
     java -jar printjob.jar http://colorjet:631/ipp/printer A4-blank.pdf
     
     send ipp request to http://colorjet:631/ipp/printer
+    ipp version 1.1
     ipp response status: 0000
     group 01
        attributes-charset (47) = utf-8

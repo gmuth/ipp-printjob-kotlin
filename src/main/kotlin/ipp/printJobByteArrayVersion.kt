@@ -8,6 +8,7 @@ package ipp
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI
+import java.nio.charset.Charset
 
 fun main(args: Array<String>) {
     val (printerURI, documentInputStream) = getArgsOrThrowUsage(args)
@@ -15,7 +16,7 @@ fun main(args: Array<String>) {
 }
 
 fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
-    val charset = Charsets.UTF_8
+    var charset = Charsets.US_ASCII
 
     // encode Print-Job operation
     val byteArrayOutputStream = ByteArrayOutputStream()
@@ -91,6 +92,7 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
                 }
             }
             println(String.format("   %s (%02X) = %s", name, tag, value))
+            if (name == "attributes-charset") charset = Charset.forName(value as String)
         } while (tag != 0x03.toByte())
     }
 }

@@ -23,7 +23,9 @@ fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
     val ippContentType = "application/ipp"
 
     println("send ipp request to $uri")
-    val httpURLConnection = uri.toURL().openConnection() as HttpURLConnection
+    val httpScheme = uri.scheme.replace("ipp", "http")
+    val httpUri = URI.create("${httpScheme}:${uri.schemeSpecificPart}")
+    val httpURLConnection = httpUri.toURL().openConnection() as HttpURLConnection
     with(httpURLConnection) {
         setConnectTimeout(3000)
         setDoOutput(true)

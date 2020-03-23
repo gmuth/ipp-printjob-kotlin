@@ -19,7 +19,9 @@ fun main(args: Array<String>) {
 
 fun printJobWithStatusOnly(uri: URI, documentInputStream: InputStream) {
     val charset = Charsets.UTF_8
-    with(uri.toURL().openConnection() as HttpURLConnection) {
+    val httpScheme = uri.scheme.replace("ipp", "http")
+    val httpUri = URI.create("${httpScheme}:${uri.schemeSpecificPart}")
+    with(httpUri.toURL().openConnection() as HttpURLConnection) {
         setDoOutput(true)
         setRequestProperty("Content-Type", "application/ipp")
         // encode ipp request 'Print-Job operation'

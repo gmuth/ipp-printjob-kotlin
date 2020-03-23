@@ -43,7 +43,9 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
 
     // exchange ipp messages via http
     println("send ipp request to $uri")
-    val ippResponse = with(uri.toURL().openConnection() as HttpURLConnection) {
+    val httpScheme = uri.scheme.replace("ipp", "http")
+    val httpUri = URI.create("${httpScheme}:${uri.schemeSpecificPart}")
+    val ippResponse = with(httpUri.toURL().openConnection() as HttpURLConnection) {
         val ippContentType = "application/ipp"
         setConnectTimeout(3000)
         setDoOutput(true)

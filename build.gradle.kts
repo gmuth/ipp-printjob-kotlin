@@ -22,7 +22,7 @@ tasks.withType<ShadowJar>() {
     archiveBaseName.set("printjob")
     archiveClassifier.set("")
     manifest {
-        attributes(mapOf("Main-Class" to "ipp.PrintJobKt"))
+        attributes(mapOf("Main-Class" to "ipp.PrintJobStreamingVersionKt"))
     }
 }
 

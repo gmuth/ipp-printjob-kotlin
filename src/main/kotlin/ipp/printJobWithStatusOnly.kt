@@ -18,7 +18,6 @@ fun main(args: Array<String>) {
 }
 
 fun printJobWithStatusOnly(uri: URI, documentInputStream: InputStream) {
-    val charset = Charsets.UTF_8
     val httpScheme = uri.scheme.replace("ipp", "http")
     val httpUri = URI.create("${httpScheme}:${uri.schemeSpecificPart}")
     with(httpUri.toURL().openConnection() as HttpURLConnection) {
@@ -29,22 +28,21 @@ fun printJobWithStatusOnly(uri: URI, documentInputStream: InputStream) {
             fun writeAttribute(tag: Int, name: String, value: String) {
                 writeByte(tag)
                 writeShort(name.length)
-                write(name.toByteArray(charset))
+                write(name.toByteArray(Charsets.US_ASCII))
                 writeShort(value.length)
-                write(value.toByteArray(charset))
+                write(value.toByteArray(Charsets.US_ASCII))
             }
             writeShort(0x0101) // ipp version
             writeShort(0x0002) // print job operation
             writeInt(0x002A) // request id
             writeByte(0x01) // operation group tag
-            writeAttribute(0x47, "attributes-charset", charset.name().toLowerCase())
+            writeAttribute(0x47, "attributes-charset", "us-ascii")
             writeAttribute(0x48, "attributes-natural-language", "en")
             writeAttribute(0x45, "printer-uri", "$uri")
             writeByte(0x03) // end tag
             // append document
             documentInputStream.copyTo(outputStream)
             close()
-            outputStream.close()
         }
         // get http status and ipp status
         if (responseCode == 200) {

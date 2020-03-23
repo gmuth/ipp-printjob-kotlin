@@ -36,15 +36,15 @@ fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
         fun writeAttribute(tag: Int, name: String, value: String) {
             writeByte(tag)
             writeShort(name.length)
-            write(name.toByteArray(charset))
+            write(name.toByteArray(Charsets.US_ASCII))
             writeShort(value.length)
-            write(value.toByteArray(charset))
+            write(value.toByteArray(Charsets.US_ASCII))
         }
         writeShort(0x0101) // ipp version
         writeShort(0x0002) // print job operation
         writeInt(0x002A) // request id
         writeByte(0x01) // operation group tag
-        writeAttribute(0x47, "attributes-charset", charset.name().toLowerCase())
+        writeAttribute(0x47, "attributes-charset", "us-ascii")
         writeAttribute(0x48, "attributes-natural-language", "en")
         writeAttribute(0x45, "printer-uri", "$uri")
         writeByte(0x03) // end tag
@@ -75,14 +75,14 @@ fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
                 continue
             }
             // attribute tag
-            val name = String(readValue(), charset)
+            val name = String(readValue(), Charsets.US_ASCII)
             val value: Any = when (tag.toInt()) {
                 0x21, 0x23 -> {
                     readShort()
                     readInt()
                 }
                 0x41, 0x44, 0x45, 0x47, 0x48 -> {
-                    String(readValue(), charset)
+                    String(readValue(), Charsets.US_ASCII)
                 }
                 else -> {
                     readValue()

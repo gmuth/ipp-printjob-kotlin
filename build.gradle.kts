@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
@@ -18,7 +19,13 @@ dependencies {
 
 defaultTasks("clean", "shadowJar")
 
-tasks.withType<ShadowJar>() {
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+tasks.withType<ShadowJar> {
     archiveBaseName.set("printjob")
     archiveClassifier.set("")
     manifest {

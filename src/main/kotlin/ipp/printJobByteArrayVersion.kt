@@ -64,7 +64,11 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
 
     // decode ipp response
     with(DataInputStream(ByteArrayInputStream(ippResponse))) {
-        fun readValue(): ByteArray = readNBytes(readShort().toInt())
+        fun readValue(): ByteArray {
+            val byteArray = ByteArray(readShort().toInt())
+            read(byteArray)
+            return byteArray
+        }
         println(String.format("ipp version %d.%s", readByte(), readByte()))
         println(String.format("ipp status %04X", readShort()))
         readInt() // ignore request id

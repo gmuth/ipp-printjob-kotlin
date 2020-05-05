@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 }
 
 fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
-    var charset = Charsets.US_ASCII
+    var charset = Charsets.UTF_8
     val ippContentType = "application/ipp"
 
     println("send ipp request to $uri")
@@ -38,7 +38,7 @@ fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
             writeShort(name.length)
             write(name.toByteArray(Charsets.US_ASCII))
             writeShort(value.length)
-            write(value.toByteArray(Charsets.US_ASCII))
+            write(value.toByteArray(charset))
         }
         writeShort(0x0101) // ipp version
         writeShort(0x0002) // print job operation
@@ -82,7 +82,7 @@ fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
                     readInt()
                 }
                 0x41, 0x44, 0x45, 0x47, 0x48 -> {
-                    String(readValue(), Charsets.US_ASCII)
+                    String(readValue(), charset)
                 }
                 else -> {
                     readValue()

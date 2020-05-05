@@ -2,6 +2,8 @@
 
 A minimal client implementation of the ipp-protocol written in kotlin for the jvm.
 
+![Java CI with Gradle](https://github.com/gmuth/ipp-printjob-kotlin/workflows/Java%20CI%20with%20Gradle/badge.svg)
+
 ### General
 
 The printjob source code should be useful for use cases of driverless printing.

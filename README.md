@@ -1,6 +1,6 @@
 # ipp-printjob-kotlin
 
-A minimal client implementation of the ipp-protocol written in kotlin for the jvm.
+A minimal client implementation of the ipp protocol (100 lines) written in kotlin for the jvm.
 
 ![Java CI with Gradle](https://github.com/gmuth/ipp-printjob-kotlin/workflows/Java%20CI%20with%20Gradle/badge.svg)
 

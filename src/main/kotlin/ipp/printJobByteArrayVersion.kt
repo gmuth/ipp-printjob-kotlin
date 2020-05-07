@@ -34,7 +34,6 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
         writeAttribute(0x48, "attributes-natural-language", "en")
         writeAttribute(0x45, "printer-uri", "$uri")
         writeByte(0x03) // end tag
-        close()
         byteArrayOutputStream.close()
         byteArrayOutputStream.toByteArray()
     }
@@ -48,10 +47,7 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
         setConnectTimeout(3000)
         setDoOutput(true)
         setRequestProperty("Content-Type", ippContentType)
-        val ippRequestInputStream = ippRequest.inputStream()
-        SequenceInputStream(ippRequestInputStream, documentInputStream).copyTo(outputStream)
-        ippRequestInputStream.close()
-        documentInputStream.close()
+        SequenceInputStream(ippRequest.inputStream(), documentInputStream).copyTo(outputStream)
         // check response
         if (getHeaderField("Content-Type") != ippContentType) {
             throw IOException("response from $uri is not '$ippContentType'")

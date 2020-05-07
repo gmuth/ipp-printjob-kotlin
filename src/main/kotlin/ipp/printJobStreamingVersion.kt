@@ -49,7 +49,7 @@ fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
         writeAttribute(0x45, "printer-uri", "$uri")
         writeByte(0x03) // end tag
         // append document
-        documentInputStream.copyTo(httpURLConnection.outputStream)
+        documentInputStream.copyTo(this)
         close()
     }
     // check http response

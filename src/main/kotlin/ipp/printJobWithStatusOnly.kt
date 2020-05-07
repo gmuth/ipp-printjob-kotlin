@@ -41,7 +41,7 @@ fun printJobWithStatusOnly(uri: URI, documentInputStream: InputStream) {
             writeAttribute(0x45, "printer-uri", "$uri")
             writeByte(0x03) // end tag
             // append document
-            documentInputStream.copyTo(outputStream)
+            documentInputStream.copyTo(this)
             close()
         }
         // get http status and ipp status

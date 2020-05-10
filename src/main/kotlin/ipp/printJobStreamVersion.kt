@@ -15,10 +15,10 @@ import java.nio.charset.Charset
 
 fun main(args: Array<String>) {
     val (printerURI, documentInputStream) = getArgsOrThrowUsage(args)
-    printJobStreamingVersion(printerURI, documentInputStream)
+    printJobStreamVersion(printerURI, documentInputStream)
 }
 
-fun printJobStreamingVersion(uri: URI, documentInputStream: InputStream) {
+fun printJobStreamVersion(uri: URI, documentInputStream: InputStream) {
     var charset = Charsets.UTF_8
     val ippContentType = "application/ipp"
 

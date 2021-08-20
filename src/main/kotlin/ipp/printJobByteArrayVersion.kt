@@ -60,33 +60,31 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
 
     // decode ipp response
     with(DataInputStream(ByteArrayInputStream(ippResponse))) {
-        fun readValue()  = ByteArray(readShort().toInt()).also { read(it) }
+        fun readValue() = ByteArray(readShort().toInt()).also { read(it) }
         println(String.format("version %d.%d", readByte(), readByte()))
-        println(String.format("status %d", readShort()))
+        println(String.format("status  %d", readShort()))
         println(String.format("request %d", readInt()))
-        var tag: Byte
         do {
-            tag = readByte()
-            if (tag < 0x10) {
+            val tag = readByte()
+            if (tag < 0x10) { // delimiter
                 println(String.format("group %02X", tag))
-                continue
+            } else { // attribute value
+                val name = String(readValue(), Charsets.US_ASCII)
+                val value: Any = when (tag.toInt()) {
+                    0x21, 0x23 -> {
+                        readShort()
+                        readInt()
+                    }
+                    0x41, 0x44, 0x45, 0x47, 0x48 -> {
+                        String(readValue(), Charsets.US_ASCII)
+                    }
+                    else -> {
+                        readValue()
+                        String.format("<decoding-tag-%02X-not-implemented>", tag)
+                    }
+                }
+                println(String.format("   %s (%02X) = %s", name, tag, value))
             }
-            // attribute tag
-            val name = String(readValue(), Charsets.US_ASCII)
-            val value: Any = when (tag.toInt()) {
-                0x21, 0x23 -> {
-                    readShort()
-                    readInt()
-                }
-                0x41, 0x44, 0x45, 0x47, 0x48 -> {
-                    String(readValue(), Charsets.US_ASCII)
-                }
-                else -> {
-                    readValue()
-                    String.format("<decoding-tag-%02X-not-implemented>", tag)
-                }
-            }
-            println(String.format("   %s (%02X) = %s", name, tag, value))
         } while (tag != 0x03.toByte())
     }
 }

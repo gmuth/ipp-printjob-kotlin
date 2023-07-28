@@ -8,6 +8,7 @@ package ipp
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI
+import java.nio.charset.Charset
 
 fun main(args: Array<String>) {
     val (printerURI, documentInputStream) = getArgsOrThrowUsage(args)
@@ -34,18 +35,17 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
         writeAttribute(0x48, "attributes-natural-language", "en")
         writeAttribute(0x45, "printer-uri", "$uri")
         writeByte(0x03) // end tag
-        byteArrayOutputStream.close()
         byteArrayOutputStream.toByteArray()
     }
 
     // exchange ipp messages via http
     println("send ipp request to $uri")
     val httpScheme = uri.scheme.replace("ipp", "http")
-    val httpUri = URI.create("${httpScheme}:${uri.schemeSpecificPart}")
+    val httpUri = URI.create("$httpScheme:${uri.rawSchemeSpecificPart}")
     val ippResponse = with(httpUri.toURL().openConnection() as HttpURLConnection) {
         val ippContentType = "application/ipp"
-        setConnectTimeout(3000)
-        setDoOutput(true)
+        connectTimeout = 3000
+        doOutput = true
         setRequestProperty("Content-Type", ippContentType)
         SequenceInputStream(ippRequest.inputStream(), documentInputStream).copyTo(outputStream)
         // check response
@@ -60,7 +60,8 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
 
     // decode ipp response
     with(DataInputStream(ByteArrayInputStream(ippResponse))) {
-        fun readValue() = ByteArray(readShort().toInt()).also { read(it) }
+        fun readString(charset: Charset = Charsets.US_ASCII) =
+            String(ByteArray(readShort().toInt()).also { read(it) }, charset)
         println(String.format("version %d.%d", readByte(), readByte()))
         println(String.format("status  %d", readShort()))
         println(String.format("request %d", readInt()))
@@ -69,17 +70,17 @@ fun printJobByteArrayVersion(uri: URI, documentInputStream: InputStream) {
             if (tag < 0x10) { // delimiter
                 println(String.format("group %02X", tag))
             } else { // attribute value
-                val name = String(readValue(), Charsets.US_ASCII)
+                val name = readString()
                 val value: Any = when (tag.toInt()) {
                     0x21, 0x23 -> {
                         readShort()
                         readInt()
                     }
                     0x41, 0x44, 0x45, 0x47, 0x48 -> {
-                        String(readValue(), Charsets.US_ASCII)
+                        readString(Charsets.UTF_8)
                     }
                     else -> {
-                        readValue()
+                        readString()
                         String.format("<decoding-tag-%02X-not-implemented>", tag)
                     }
                 }

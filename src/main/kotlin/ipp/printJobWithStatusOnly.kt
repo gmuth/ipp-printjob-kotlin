@@ -19,9 +19,10 @@ fun main(args: Array<String>) {
 
 fun printJobWithStatusOnly(uri: URI, documentInputStream: InputStream) {
     val httpScheme = uri.scheme.replace("ipp", "http")
-    val httpUri = URI.create("${httpScheme}:${uri.schemeSpecificPart}")
+    val httpUri = URI.create("$httpScheme:${uri.rawSchemeSpecificPart}")
     with(httpUri.toURL().openConnection() as HttpURLConnection) {
-        setDoOutput(true)
+        connectTimeout = 3000
+        doOutput = true
         setRequestProperty("Content-Type", "application/ipp")
         // encode ipp request 'Print-Job operation'
         with(DataOutputStream(outputStream)) {
@@ -47,7 +48,7 @@ fun printJobWithStatusOnly(uri: URI, documentInputStream: InputStream) {
         // get http status and ipp status
         if (responseCode == 200) DataInputStream(inputStream).run {
             println(String.format("version %d.%d", readByte(), readByte()))
-            println(String.format("status  %04X", readShort()))
+            println(String.format("status  %04X", readShort())) // 0 = SuccessfulOk
         } else {
             throw IOException("post to $uri failed with http status $responseCode")
         }
